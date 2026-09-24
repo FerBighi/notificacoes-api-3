@@ -22,5 +22,5 @@ Falharam: 1 (o desafio do parseId, indicando o defeito)
 **Obtido:** O teste falhou porque a função aceitou o ID "12abc" como um número válido, ignorando as letras.
 
 ## Cobertura
-**% Lines da linha "helpers":** [COLOQUE AQUI O NÚMERO QUE APARECEU NO TERMINAL]%
+**% Lines da linha "helpers":** 55.55%
 **Em uma frase, o que esse número significa:** Esse número representa a porcentagem de linhas de código das funções da pasta "helpers" que foram executadas e validadas pelos nossos testes unitários.

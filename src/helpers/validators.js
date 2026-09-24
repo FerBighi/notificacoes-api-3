@@ -20,7 +20,7 @@ function isEmail(valor) {
   if (!valor) return null; // Se não foi enviado, não valida (use isRequired para isso)
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!regex.test(valor)) {
-    return "E-mail inválido";
+    return "E-mail incorreto";
   }
   return null;
 }

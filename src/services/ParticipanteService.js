@@ -1,10 +1,8 @@
 // src/services/ParticipanteService.js
-const { Participante } = require("../models");
+const Participante = require("../models/ParticipanteModel"); // 💡 REMOVIDO AS CHAVES AQUI!
 const { NotFoundError } = require("../errors/AppError");
 
 async function listarTodos() {
-  // Use Participante.findAll() com ordenação por nome
-  // _________________________________
   const participantes = await Participante.findAll({
     order: [["nome", "ASC"]],
   });
@@ -22,7 +20,6 @@ async function buscarPorId(id) {
 }
 
 async function criar(dados) {
-  // Use Participante.create(dados) com try/catch para erros do Sequelize
   try {
     const novoParticipante = await Participante.create(dados);
     return novoParticipante;

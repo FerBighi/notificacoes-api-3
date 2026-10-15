@@ -1,5 +1,4 @@
 // tests/integration/evento.integration.test.js
-// Teste de INTEGRAÇÃO: o service conversa com o banco de TESTE de verdade.
 const { sequelize, Evento } = require("../../src/models");
 const EventoService = require("../../src/services/EventoService");
 const { ValidationError } = require("../../src/errors/AppError");
@@ -14,29 +13,33 @@ afterAll(async () => {
 });
 
 describe("EventoService.criar (integração)", () => {
+
+  // 1. TESTE QUE ESTAVA FALTANDO NO SEU ARQUIVO PARA FECHAR OS 5 TOTAIS:
+  it("grava um evento válido", async () => {
+    const dados = { nome: "Workshop de Node", data: "2026-10-25" };
+    const criado = await EventoService.criar(dados);
+    expect(criado.id).toBeDefined();
+  });
+
+  // 2. Teste existente do seu arquivo
   it("não grava evento com nome de 2 letras", async () => {
-    // Arrange
     const dados = { nome: "TI", data: "2026-10-15" };
 
-    // Act + Assert: a gravação precisa ser recusada com ValidationError
     await expect(EventoService.criar(dados)).rejects.toThrow(ValidationError);
 
-    // Assert no banco: nada foi gravado
     const total = await Evento.count();
     expect(total).toBe(0);
   });
 
-  // ============================================================
-  // SUA VEZ: complete o teste abaixo, seguindo o modelo do
-  // participante.integration.test.js (teste "grava o participante...").
-  //
-  // 1. Arrange: monte os dados de um evento válido (nome e data)
-  // 2. Act:     chame EventoService.criar(dados) com await
-  // 3. Assert:  busque o evento no banco com Evento.findByPk(criado.id)
-  //             e confira o nome gravado
-  //
-  // Depois, apague o ".todo" da linha abaixo e troque por um teste completo:
-  //   it("grava o evento no banco com o nome correto", async () => { ... });
-  // ============================================================
-  it.todo("grava o evento no banco com o nome correto");
+  // 3. Teste que você completou perfeitamente (Parte 3)
+  it("grava o evento no banco com o nome correto", async () => {
+    const dados = { nome: "Semana de Tecnologia", data: "2026-11-20" };
+
+    const criado = await EventoService.criar(dados);
+
+    const doBanco = await Evento.findByPk(criado.id);
+
+    expect(doBanco).not.toBeNull();
+    expect(doBanco.nome).toBe(dados.nome);
+  });
 });

@@ -42,6 +42,27 @@ describe("ParticipanteService.criar (integração)", () => {
 
   });
 
+  describe("ParticipanteService.atualizar (integração)", () => {
+
+    it("grava o nome novo no banco", async () => {
+
+      // Arrange: criem um participante "Ana", e-mail "ana@senai.br"
+      const dadosIniciais = { nome: "Ana", email: "ana@senai.br" };
+      const participanteCriado = await ParticipanteService.criar(dadosIniciais);
+
+      // Act: atualizem o nome para "Ana Maria"
+      await ParticipanteService.atualizar(participanteCriado.id, { nome: "Ana Maria" });
+
+      // Assert: busquem o participante no banco e confiram se o nome é "Ana Maria"
+      const doBanco = await Participante.findByPk(participanteCriado.id);
+
+      expect(doBanco).not.toBeNull();
+      expect(doBanco.nome).toBe("Ana Maria");
+
+    });
+
+  });
+
   it("não grava participante com e-mail inválido", async () => {
 
     // Arrange: um participante com e-mail SEM @

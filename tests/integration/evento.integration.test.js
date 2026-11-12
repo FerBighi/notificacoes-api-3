@@ -1,4 +1,5 @@
 // tests/integration/evento.integration.test.js
+// Teste de INTEGRAÇÃO: o service conversa com o banco de TESTE de verdade.
 const { sequelize, Evento } = require("../../src/models");
 const EventoService = require("../../src/services/EventoService");
 const { ValidationError } = require("../../src/errors/AppError");
@@ -13,33 +14,28 @@ afterAll(async () => {
 });
 
 describe("EventoService.criar (integração)", () => {
-
-  // 1. TESTE QUE ESTAVA FALTANDO NO SEU ARQUIVO PARA FECHAR OS 5 TOTAIS:
-  it("grava um evento válido", async () => {
-    const dados = { nome: "Workshop de Node", data: "2026-10-25" };
-    const criado = await EventoService.criar(dados);
-    expect(criado.id).toBeDefined();
-  });
-
-  // 2. Teste existente do seu arquivo
   it("não grava evento com nome de 2 letras", async () => {
+    // Arrange
     const dados = { nome: "TI", data: "2026-10-15" };
 
+    // Act + Assert: a gravação precisa ser recusada com ValidationError
     await expect(EventoService.criar(dados)).rejects.toThrow(ValidationError);
 
+    // Assert no banco: nada foi gravado
     const total = await Evento.count();
     expect(total).toBe(0);
   });
 
-  // 3. Teste que você completou perfeitamente (Parte 3)
   it("grava o evento no banco com o nome correto", async () => {
+    // Arrange
     const dados = { nome: "Semana de Tecnologia", data: "2026-11-20" };
 
+    // Act
     const criado = await EventoService.criar(dados);
 
+    // Assert: busca de novo NO BANCO, não confia no objeto devolvido
     const doBanco = await Evento.findByPk(criado.id);
-
     expect(doBanco).not.toBeNull();
-    expect(doBanco.nome).toBe(dados.nome);
+    expect(doBanco.nome).toBe("Semana de Tecnologia");
   });
 });
